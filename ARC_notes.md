@@ -30,7 +30,7 @@ Example: say I want transfer a `test.txt` file on my desktop to my own folder in
 
 # Submitting and running code
 
-After copying your data and code into you directory in the ARC server, you can then run the code by submitting it to the computing node, or testing/preprocessing data within the interactive node. Here I will show instructions for running Python scripts. As I am not an expert in MATLAB, please refer to [this page](https://arc-software-guide.readthedocs.io/en/latest/apps/arc_matlab.html) for how to run your MATLAB code in computing nodes.
+After copying your data and code into you directory in the ARC server, you can then run the code by submitting it to the computing node, or testing/preprocessing data within the interactive node. Here I will show instructions for running Python scripts, although most commands below will be transferable to MATLAB. As I am not an expert in MATLAB, please refer to [this page](https://arc-software-guide.readthedocs.io/en/latest/apps/arc_matlab.html) for how to run your MATLAB code in computing nodes.
 
 ## Creating virtual environments (for Python users)
 
