@@ -125,6 +125,6 @@ There are 3 levels of services on ARC: basic, standard, priority. Details of the
 
 This website provides a full list of installed libraries and software on ARC: https://arc-module-list.readthedocs.io/en/latest/
 
-The commands `sbatch`, `srun` etc. we used before all belong to the workload management software called SLURM. There are many advanced usages of these commands for you to add more specifations to your submission, and a summary of SLURM commands can be found in this pdf: https://slurm.schedmd.com/pdfs/summary.pdf
+The commands `sbatch`, `srun` etc. we used before all belong to the workload management software called SLURM. There are many advanced usages of these commands for you to add more specifications to your submission, and a summary of SLURM commands can be found in this pdf: https://slurm.schedmd.com/pdfs/summary.pdf
 
 # 
