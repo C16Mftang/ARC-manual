@@ -104,6 +104,12 @@ When running code in this interactive session, you will be able to see the real-
 
 However, although it is [claimed that](https://arc-user-guide.readthedocs.io/en/latest/arc-systems.html) the HTC cluster's interactive nodes have GPU cores, I haven't been able to use the GPU cores in the interactive nodes, even though I required it in my `test.sh`. Also, notice that the maximum time on the interactive sessions is 4 hours, and after that your script will be terminated. So make sure you only test and debug your code there!
 
+## Using VScode to connect to the server
+
+If you have successfully executed your code on the ARC and obtained your results, say a plot, you will need to `scp` the plot to your local machine to see if everything is in place. If, for example, you find your plot colored incorrectly by your code, you will have to modify your code and `scp` it to ARC, run it, generate the plot and then `scp` the plot to your local machine to view it again. This sounds a bit exhausting. One way to get away from this is to use VScode to connect to the ARC and you can then view your plot, modify your code and view your plot again on the remote folder, without the need to `scp` everything back and forth. The official instructions for doing so is [here](https://code.visualstudio.com/docs/remote/ssh). 
+
+This approach works perfectly for Python. However, it seems that running MATLAB on VScode is a bit of a headache, so I'm still searching for the best way to get rid of `scp` i.e., to see and edit files in the ARC folders real-time for MATLAB. We can probably ask Benoit if he's got any experience in it...
+
 # Usage and credit management
 
 By default, users consume credits from a pool belonging to their project (e.g., our `ndcn-computational-neuroscience` project) when they run jobs. Our project is initialized with 25,000 core hours, and I have consumed a few hours to write this note. The credit we have is basically core hours $\times$ 3,600. After you log in to your login node, you can use the command `mybalance` to see our current available credits, which shows you something like this:
@@ -127,4 +133,5 @@ This website provides a full list of installed libraries and software on ARC: ht
 
 The commands `sbatch`, `srun` etc. we used before all belong to the workload management software called SLURM. There are many advanced usages of these commands for you to add more specifications to your submission, and a summary of SLURM commands can be found in this pdf: https://slurm.schedmd.com/pdfs/summary.pdf
 
-# 
+Cancelling a job: `scancel 123456` where `123456` is your job id.
+
