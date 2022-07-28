@@ -90,7 +90,11 @@ Notice that you will need to prepare this `test.sh` file on your local machine a
 
 After this command your script is in the queue, waiting to be assigned a node/nodes. If you asked for email notifications in your `.sh` file, you will receive an email telling you your script is beginning to run. You can check the status of your job using the `squeue` command.
 
-I haven't found the way to monitor the real-time output of your code when running in the computing nodes on ARC. For example, you may want your code to print the loss value for every training iteration on screen, but you won't be able to see this with the computing nodes. However, after your code starts to run, you will find a file called `slurm-123456.out` in your current working directory, which keeps a record of your real-time outputs. The `123456` here is your job id, which will be shown to you after your submission.
+I haven't found the way to monitor the real-time output of your code when running in the computing nodes on ARC. For example, you may want your code to print the loss value for every training iteration on screen, but you won't be able to see this with the computing nodes. However, after your code starts to run, you will find a file called `slurm-123456.out` in your current working directory, which keeps a record of your real-time outputs. The `123456` here is your job id, which will be shown to you after your submission. You can also change the location of the saved output file by adding the following line to your submission `.sh` file:
+
+```shell
+#SBATCH --output=/data/ndcn-computational-neuroscience/abcd1234/YOUR_DESIRED_LOCATION/%j.out
+```
 
 ## Using the interactive session 
 
@@ -123,9 +127,13 @@ Id    Name                                     Amount   Reserved Balance  Credit
 93648 ndcn-computational-neuroscience-basic    89990684        0 89990684           0  89990684
 ```
 
-There are 3 levels of services on ARC: basic, standard, priority. Details of these levels can be found [here](https://www.arc.ox.ac.uk/arc-service-level-agreements). As you can see above our project only has credits on the basic level, which has the lowest priority in the queue. Based on my testing, a job submission with a short duration (e.g., 20mins) will have no problem in terms of priority and will run immediately after submission. This situation may change if we want to submit a job that runs longer, say 24hrs. I suggest we keep using the basic service, until we encounter some priority issues, e.g., waiting in the queue for 12hrs for a submission requiring 5 core hours.
+There are 3 levels of services on ARC: basic, standard, priority. Details of these levels can be found [here](https://www.arc.ox.ac.uk/arc-service-level-agreements). As you can see above our project only has credits on the basic level, which has the lowest priority in the queue. Based on my testing, a job submission with a short duration (e.g., 20mins) will have no problem in terms of priority and will run immediately after submission. 
+
+Update: On 27/07/2022 I tried to submit a job requesting 1 hour of running time. I submitted the request at 2pm on this day to run an experiment on memory models, and the job was queued until 1am on the next day. That is 11 hours of waiting for an 1 hour job. However, on 28/07/2022 I tried to submit the same job and the code started to execute immediately. I guess the basic service is quite random.
 
 **Purchasing credits with different levels of service:** as a group within the Medical Sciences Division, we can request basic-level credits for free by emailing [support@arc.ox.ac.uk](mailto:support@arc.ox.ac.uk). However, anything beyond this requires additional costs. The current pricing is £0.01/Core.h for the standard service, £0.02/Core.h for the priority service, and £0.08/Core.h for using GPUs. [This website](https://www.arc.ox.ac.uk/arc-accounting) gives some helpful examples of calculating the credit usage. Notice that it says the standard service is free to request - this is not the case for MSD from my understanding, but it does no harm asking.
+
+**Running jobs with priority service**: [Here](https://arc-user-guide.readthedocs.io/en/latest/arc-priority-jobs.html) is a guideline.
 
 # Miscellaneous
 
