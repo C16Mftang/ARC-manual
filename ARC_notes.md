@@ -12,6 +12,8 @@ where `abcd1234` is your Oxford email account name. Then follow the instructions
 
 As suggested, the submit/login node is not for any computational task. For running your code, you can either use the interactive node or the computing nodes (see below for how to use them).
 
+**Oct/2022 Update**: The official [ARC User Guide](https://arc-user-guide.readthedocs.io/en/latest/index.html) updated new instructions for graphical user guide.
+
 # Data transfer between ARC and your local machine
 
 The [ARC User Guide](https://arc-user-guide.readthedocs.io/en/latest/connecting-to-arc.html#copying-to-the-arc-systems) provides the basic syntax on this topic. It uses the following command to copy the data from your local machine to the ARC:
@@ -135,6 +137,8 @@ Update: On 27/07/2022 I tried to submit a job requesting 1 hour of running time.
 
 **Running jobs with priority service**: [Here](https://arc-user-guide.readthedocs.io/en/latest/arc-priority-jobs.html) is a guideline.
 
+Another important issue with basic service level is that we can only run one job at a time and it is not even possible to open an interactive session to test our scripts when another job is running.
+
 # Miscellaneous
 
 This website provides a full list of installed libraries and software on ARC: https://arc-module-list.readthedocs.io/en/latest/
@@ -142,4 +146,6 @@ This website provides a full list of installed libraries and software on ARC: ht
 The commands `sbatch`, `srun` etc. we used before all belong to the workload management software called SLURM. There are many advanced usages of these commands for you to add more specifications to your submission, and a summary of SLURM commands can be found in this pdf: https://slurm.schedmd.com/pdfs/summary.pdf
 
 Cancelling a job: `scancel 123456` where `123456` is your job id.
+
+`ps; kill -9 PID` to terminate a process
 
