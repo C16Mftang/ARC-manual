@@ -108,7 +108,11 @@ When running code in this interactive session, you will be able to see the real-
 
 ```srun -p interactive --pty /bin/bash test.sh```
 
-However, although it is [claimed that](https://arc-user-guide.readthedocs.io/en/latest/arc-systems.html) the HTC cluster's interactive nodes have GPU cores, I haven't been able to use the GPU cores in the interactive nodes, even though I required it in my `test.sh`. Also, notice that the maximum time on the interactive sessions is 4 hours, and after that your script will be terminated. So make sure you only test and debug your code there!
+It is [claimed that](https://arc-user-guide.readthedocs.io/en/latest/arc-systems.html) the HTC cluster's interactive nodes have GPU cores. To use it, start the interactive session using:
+
+```srun -p interactive --gres=gpu:1 --pty /bin/bash```
+
+Also, notice that the maximum time on the interactive sessions is 4 hours, and after that your script will be terminated. So make sure you only test and debug your code there!
 
 ## Using VScode to connect to the server
 
