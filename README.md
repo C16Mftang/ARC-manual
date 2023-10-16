@@ -1,4 +1,4 @@
-# ARC Guidance for lab members of Bogacz group at Brain Network Dynamics Unit, University of Oxford
+# ARC Guidance
 
 ![bogacz](https://www.mrcbndu.ox.ac.uk/sites/default/files/Rafal-group-index-banner_0.jpg)
 
