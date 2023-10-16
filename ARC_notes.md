@@ -2,7 +2,7 @@ This note aims to provide a quick guide through the Advanced Research Computing 
 
 # Log-in
 
-You should have already received several emails for setting up your ARC accounts. After the account setup, in a terminal/powershell window type (make sure you are connected to Oxford WIFI or are using Oxford VPN): 
+For a start, contact Rafal (our project owner) for setting up your account within our project `ndcn-computational-neuroscience`. After the account setup, in a terminal/powershell window type (make sure you are connected to Oxford WIFI or are using Oxford VPN): 
 
 ```ssh -X abcd1234@gateway.arc.ox.ac.uk``` 
 
@@ -108,7 +108,7 @@ When running code in this interactive session, you will be able to see the real-
 
 ```srun -p interactive --pty /bin/bash test.sh```
 
-It is [claimed that](https://arc-user-guide.readthedocs.io/en/latest/arc-systems.html) the HTC cluster's interactive nodes have GPU cores. To use it, start the interactive session using:
+You can also use GPUs in an interactive session in the HTC clusters. To use it, start the interactive session using:
 
 ```srun -p interactive --gres=gpu:1 --pty /bin/bash```
 
