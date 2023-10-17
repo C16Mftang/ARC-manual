@@ -32,9 +32,11 @@ Example: say I want transfer a `test.txt` file on my desktop to my own folder in
 
 # Submitting and running code
 
-After copying your data and code into you directory in the ARC server, you can then run the code by submitting it to the computing node, or testing/preprocessing data within the interactive node. Here I will show instructions for running Python scripts, although most commands below will be transferable to MATLAB. As I am not an expert in MATLAB, please refer to [this page](https://arc-software-guide.readthedocs.io/en/latest/apps/arc_matlab.html) for how to run your MATLAB code in computing nodes.
+After copying your data and code into you directory in the ARC server, you can then run the code by submitting it to the computing node, or testing/preprocessing data within the interactive node. Here the instructions for Python and MATLAB are separate. However, some of them are interchangeable between these two languages (e.g. job submission scripts), so make sure you read them both! 
 
-## Creating virtual environments (for Python users)
+## Python
+
+### Creating virtual environments (for Python users)
 
 ARC uses Anaconda for environment management. [This page](https://arc-software-guide.readthedocs.io/en/latest/python/anaconda_venv.html) already provided some instructions for basic virtual environment creation, you may also refer to [this Anaconda page](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) for other functions related to virtual environments. ARC recommended using `source activate` rather than `conda activate` for activating your created virtual environment due to some conflicts with the job submission system.
 
@@ -57,7 +59,7 @@ In terms of installing libraries in your own virtual environment, for most libra
 
 This is particularly important because some DL frameworks like PyTorch will ask you to specify the version of CUDA during installation. 
 
-## Submitting a job
+### Submitting a job
 
 To run your code on the computing nodes, you have to submit it to a queue where you wait until you are assigned a node. For Python virtual environment users, it is also required that you deactivate the current virtual environment and then submit the job, because you are going to specify the virtual environment during submission. The submission is through a `.sh` script specifying what resources you need. For example let's look at the following submission script `test.sh`:
 
@@ -98,7 +100,7 @@ I haven't found the way to monitor the real-time output of your code when runnin
 #SBATCH --output=/data/ndcn-computational-neuroscience/abcd1234/YOUR_DESIRED_LOCATION/%j.out
 ```
 
-## Using the interactive session 
+### Using the interactive session 
 
 Run the command to initialize an interactive session, which is basically a computing node assigned to you but with limited computing power:
 
@@ -114,11 +116,98 @@ You can also use GPUs in an interactive session in the HTC clusters. To use it, 
 
 Also, notice that the maximum time on the interactive sessions is 4 hours, and after that your script will be terminated. So make sure you only test and debug your code there!
 
-## Using VScode to connect to the server
+### Using VScode to connect to the server
 
 If you have successfully executed your code on the ARC and obtained your results, say a plot, you will need to `scp` the plot to your local machine to see if everything is in place. If, for example, you find your plot colored incorrectly by your code, you will have to modify your code and `scp` it to ARC, run it, generate the plot and then `scp` the plot to your local machine to view it again. This sounds a bit exhausting. One way to get away from this is to use VScode to connect to the ARC and you can then view your plot, modify your code and view your plot again on the remote folder, without the need to `scp` everything back and forth. The official instructions for doing so is [here](https://code.visualstudio.com/docs/remote/ssh). 
 
-This approach works perfectly for Python. However, it seems that running MATLAB on VScode is a bit of a headache, so I'm still searching for the best way to get rid of `scp` i.e., to see and edit files in the ARC folders real-time for MATLAB. We can probably ask Benoit if he's got any experience in it...
+## MATLAB
+
+🎈*Full credit to Charlotte for writing this section for MATLAB users*🎈
+
+There are two key methods to run MATLAB on the arc, which take advantage of the parallel processing inbuilt into the GUI – using command line (clunky) or using the ARC’s graphical interface. If your job is quite a simple one, and doesn’t require more than 1 node, you can just use the inbuilt [parfor function](https://uk.mathworks.com/help/parallel-computing/parfor.html), and the command line submission which ARC User Guide goes into [here](https://arc-software-guide.readthedocs.io/en/latest/apps/arc_matlab.html). This is probably the easiest approach for those already familiar with SLURM.
+
+For those unfamiliar with SLURM (or who just want to avoid it), I recommend starting with the second to get to grips with it. This is the method I describe below.
+
+This method assumes that you have already created an ARC account, and have your password to hand. I am also working on Windows 11, and the exact process may be different for other devices.
+
+### Connect to the NoMachine Client
+
+The ARC guidelines for how to do this can be found [here](https://arc-user-guide.readthedocs.io/en/latest/arc-nx-web.html).
+
+The NoMachine Client is a browser-based linux desktop on a server. You log in using your ARC credentials.
+
+Then, once you have opened a desktop (you will need one per job running simultaneously), you can open MATLAB 2022B (current latest version available).
+
+### Set up parallel clusters
+
+ARC already has the Matlab default cluster settings available in their files. The step-by-step for adding these to your NoMachine Matlab session can be found [here](https://arc-software-guide.readthedocs.io/en/latest/apps/arc_matlab_mps.html), under ‘import cluster profiles’.
+
+Repeat these steps for whichever ARC/HTC resource type you would like to use (devel, short, medium, long).
+
+Remember to validate the profile, and then set it as your default.
+
+#### Note: 
+
+There is a work around to this through using MATLAB functions, where you can begin your script with the following: 
+
+```bash
+arc_profile = parallel.importProfile ('/apps/common/commercial/MATLAB/mps_profiles/R2022b/arc_devel.mlsettings');
+
+parallel.defaultClusterProfile ('arc_devel');
+```
+
+Your NoMachine desktop is now set up to run Matlab scripts.
+
+### Transfer your job script to the machine
+
+Using whatever method you prefer (I like WinSCP), transfer the MATLAB job script and all other required scripts into your `$DATA/userID` folder.
+
+You can create the job script in the NoMachine client, but I find that it’s often slow and buggy, so this is my preferred method.
+
+### The Skeleton Script
+
+Here’s a skeleton script which you can run using parfor over multiple nodes:
+
+```
+%
+%% ARC Parallel MATLAB 
+ 
+% Have arc-xxx / htc-xxx cluster profile set as default in GUI or uncomment the
+% following two lines:
+ 
+% parprof = parallel.importProfile("/apps/common/commercial/MATLAB/mps_profiles/R2022b/xxxxxxx.mlsettings")
+% parallel.defaultProfile(parprof)
+ 
+%%% Create all initial parameters and serial code
+ 
+%%% Create parallel pool
+ 
+poolObj=parpool('arc_short',96); % name the cluster profile you want to use and the number % of workers
+ 
+parfor w = 1:xxxx
+%         Run the work in parallel (e.g. over a set of parameters)
+end
+ 
+% Shutdown parallel pool.
+delete(poolObj);
+ 
+% Then whatever you want to do with the parallelised data
+% I recommend saving the workspace!
+ 
+ 
+```
+
+It’s really that simple! You then just run the code from within the NoMachine GUI as you would any other MATLAB script. It will automate the number of nodes/CPUs to run over.
+
+The parpool function creates the SLURM script and submits it for you.
+
+Note: You may also notice a series of ‘Jobx’ files opening in your current folder – do not delete these!
+
+### Checking on your code
+
+If you want to find your jobID and progress, I find the easiest way is to go back to your normal desktop (you can close the browser – nx.arc.ox.ac.uk continues running without you), then log into the ARC using the normal ssh method.
+
+Then if you type `squeue -u -userID`, you will be able to see the details of any jobs you are currently running. 
 
 # Usage and credit management
 
